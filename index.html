@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Nidhi 🎉</title>
+<title>For Nidhi 🎉</title>
 
 <style>
 body {
@@ -11,15 +11,15 @@ body {
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     text-align: center;
     overflow: hidden;
+    color: white;
 }
 
-/* INTRO SCREEN */
+/* INTRO */
 #intro {
     position: fixed;
     width: 100%;
     height: 100%;
     background: #ff6f91;
-    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,32 +29,32 @@ body {
 
 #intro button {
     padding: 15px 30px;
-    border: none;
     border-radius: 30px;
-    background: white;
-    color: #ff6f91;
+    border: none;
     font-size: 18px;
     cursor: pointer;
 }
 
-/* MAIN CONTENT */
-#main {
-    display: none;
-}
+/* MAIN */
+#main { display: none; }
 
-h1 {
-    margin-top: 40px;
-    color: white;
-}
+h1 { margin-top: 30px; }
 
-/* SLIDESHOW */
-.slideshow img {
-    width: 200px;
-    height: 200px;
+/* SLIDESHOW (FIXED SMOOTH) */
+.slideshow {
+    width: 220px;
+    height: 220px;
+    margin: auto;
     border-radius: 50%;
-    object-fit: cover;
+    overflow: hidden;
     border: 4px solid white;
-    margin-top: 20px;
+}
+
+.slideshow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
 }
 
 /* BUTTONS */
@@ -66,12 +66,8 @@ button {
     cursor: pointer;
 }
 
-/* CARDS */
-.section {
-    display: none;
-    color: white;
-}
-
+/* SECTIONS */
+.section { display: none; }
 .card {
     background: rgba(255,255,255,0.2);
     margin: 10px auto;
@@ -86,23 +82,25 @@ button {
     bottom: -20px;
     animation: floatUp 5s linear infinite;
 }
-
-@keyframes floatUp {
-    to { transform: translateY(-100vh); }
-}
+@keyframes floatUp { to { transform: translateY(-100vh); } }
 
 /* FIREWORK */
 .fire {
     position: absolute;
-    font-size: 20px;
     animation: boom 1s forwards;
 }
-
 @keyframes boom {
-    to {
-        transform: translateY(-80px) scale(2);
-        opacity: 0;
-    }
+    to { transform: translateY(-80px) scale(2); opacity: 0; }
+}
+
+/* GAME */
+#game {
+    display: none;
+}
+.target {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -111,8 +109,8 @@ button {
 
 <!-- INTRO -->
 <div id="intro">
-    <h2>I have something for you 🎁</h2>
-    <button onclick="start()">Open Gift</button>
+    <h2>I made something for you 🎁</h2>
+    <button onclick="start()">Open it</button>
 </div>
 
 <!-- MAIN -->
@@ -121,14 +119,15 @@ button {
 <h1>Happy Birthday Nidhi 🎉</h1>
 
 <div class="slideshow">
-    <img id="slide" src="nidhi.jpg">
+    <img id="slide" src="photo1.jpg">
 </div>
 
 <br>
 
-<button onclick="show('admire')">10 things I admire</button>
-<button onclick="show('timeline')">Memories</button>
-<button onclick="secretCheck()">Only if smiling 😊</button>
+<button onclick="show('admire')">What I admire about you</button>
+<button onclick="show('timeline')">Little memories</button>
+<button onclick="startGame()">Play a game 😊</button>
+<button onclick="secretCheck()">Only if smiling</button>
 
 <div id="admire" class="section">
     <div class="card">1. Ninte Kindness😌</div>
@@ -141,43 +140,53 @@ button {
 <div id="timeline" class="section">
     <div class="card">✨ Tour inu vech aa late night talkss😗...</div>
     <div class="card">✨ Ninte cringe dialogues</div>
-    <div class="card">✨ First day english book choich mindiyath</div>
+    <div class="card">✨ First day, english book choich mindiyath</div>
     <div class="card">✨ Today, on your bithday</div>
 </div>
 
 <div id="secret" class="section">
-    <h2>For you 💌</h2>
+    <h2>Just for you 💌</h2>
     <p id="type"></p>
 </div>
 
+<!-- GAME -->
+<div id="game">
+    <h2>Catch 5 hearts 💖</h2>
+    <p id="score">0</p>
 </div>
 
-<!-- AUDIO -->
+</div>
+
 <audio id="bgm" loop>
-<source src="music.mp3" type="audio/mpeg">
+<source src="music.mp3">
 </audio>
 
 <script>
 
 /* START */
-function start() {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("main").style.display = "block";
+function start(){
+    document.getElementById("intro").style.display="none";
+    document.getElementById("main").style.display="block";
     document.getElementById("bgm").play();
 }
 
-/* SLIDESHOW */
-let images = ["nidhi.jpg","photo2.jpg","photo1.jpg"];
-let index = 0;
+/* SMOOTH SLIDESHOW (FIXED) */
+let images=["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg"];
+let i=0;
+let slide=document.getElementById("slide");
 
-setInterval(() => {
-    index = (index + 1) % images.length;
-    document.getElementById("slide").src = images[index];
-}, 2000);
+setInterval(()=>{
+    i=(i+1)%images.length;
+    slide.style.opacity=0;
+    setTimeout(()=>{
+        slide.src=images[i];
+        slide.style.opacity=1;
+    },500);
+},2500);
 
-/* SHOW SECTION */
+/* SHOW */
 function show(id){
-    document.querySelectorAll('.section').forEach(s => s.style.display='none');
+    document.querySelectorAll('.section').forEach(s=>s.style.display='none');
     document.getElementById(id).style.display='block';
 }
 
@@ -189,23 +198,22 @@ function secretCheck(){
     }
 }
 
-/* TYPE EFFECT */
-let message = "Don't Forget Me...😌🙌💖";
-let i = 0;
-
+/* TYPE */
+let message="Don't forget me...😌🙌💖";
+let j=0;
 function typeText(){
-    let el = document.getElementById("type");
+    let el=document.getElementById("type");
     el.innerHTML="";
-    i=0;
-    let interval=setInterval(()=>{
-        if(i<message.length){
-            el.innerHTML+=message[i];
-            i++;
-        } else clearInterval(interval);
+    j=0;
+    let inter=setInterval(()=>{
+        if(j<message.length){
+            el.innerHTML+=message[j];
+            j++;
+        } else clearInterval(inter);
     },40);
 }
 
-/* HEARTS */
+/* HEARTS BG */
 setInterval(()=>{
     let h=document.createElement("div");
     h.className="heart";
@@ -217,7 +225,7 @@ setInterval(()=>{
 
 /* FIREWORK */
 function firework(e){
-    for(let i=0;i<6;i++){
+    for(let k=0;k<5;k++){
         let f=document.createElement("div");
         f.className="fire";
         f.innerHTML="✨";
@@ -226,6 +234,36 @@ function firework(e){
         document.body.appendChild(f);
         setTimeout(()=>f.remove(),1000);
     }
+}
+
+/* MINI GAME */
+let score=0;
+
+function startGame(){
+    document.getElementById("game").style.display="block";
+    score=0;
+    document.getElementById("score").innerText=score;
+
+    let gameInterval=setInterval(()=>{
+        let t=document.createElement("div");
+        t.className="target";
+        t.innerHTML="💖";
+        t.style.left=Math.random()*90+"vw";
+        t.style.top=Math.random()*80+"vh";
+
+        t.onclick=()=>{
+            score++;
+            document.getElementById("score").innerText=score;
+            t.remove();
+            if(score>=5){
+                clearInterval(gameInterval);
+                alert("You win 💖");
+            }
+        };
+
+        document.body.appendChild(t);
+        setTimeout(()=>t.remove(),2000);
+    },800);
 }
 
 </script>
